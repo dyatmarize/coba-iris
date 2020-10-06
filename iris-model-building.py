@@ -10,7 +10,7 @@ def target_encode(val):
 
 df['Species'] = df['Species'].apply(target_encode)
 
-X = df.drop('Species', axis=1)
+X = df.drop(['Species', 'Id'], axis=1)
 Y = df['Species']
 
 # Random Forest Model

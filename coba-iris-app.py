@@ -17,21 +17,30 @@ def user_input_features():
     sepal_width = st.sidebar.slider('sepal_width', 2.0, 4.4, 3.4)
     petal_length = st.sidebar.slider('petal_length', 1.0, 6.9, 1.3)
     petal_width = st.sidebar.slider('petal_width', 0.1, 2.5, 0.2)
-    data = {'sepal_length': sepal_length,
-            'sepal_width': sepal_width,
-            'petal_length' : petal_length,
-            'petal_width' : petal_width}
+    data = {'SepalLengthCm': sepal_length,
+            'SepalWidthCm': sepal_width,
+            'PetalLengthCm' : petal_length,
+            'PetalWidthCm' : petal_width}
     features = pd.DataFrame(data, index = [0])
     return features
 
 input_df = user_input_features()
 
 iris_raw = pd.read_csv('Iris.csv')
-iris = iris_raw.drop(columns = ['Species'])
+iris = iris_raw.drop(columns = ['Species', 'Id'])
 df = pd.concat([input_df, iris], axis = 0)
 
-st.subheader('Input')
+df = df[:1]
+
+st.subheader('User Input')
 st.write(df)
+
+
+iris_species = np.array(['Iris-setosa','Iris-versicolor','Iris-virginica'])
+
+
+st.subheader('Class')
+st.write(iris_species)
 
 #baca model
 load_clf = pickle.load(open('iris_clf.pkl', 'rb'))
@@ -41,7 +50,6 @@ prediction = load_clf.predict(df)
 prediction_proba = load_clf.predict_proba(df)
 
 st.subheader('Prediction')
-iris_species = np.array(['Iris-setosa','Iris-versicolor','Iris-virginica'])
 st.write(iris_species[prediction])
 
 st.subheader('Prediction Probability')
